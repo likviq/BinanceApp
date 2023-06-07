@@ -4,6 +4,6 @@ namespace BinanceApp.Domain.Interfaces
 {
     public interface ICurrencyService
     {
-        Task<List<Currency>> GetTopCurrencies();
+        Task<List<Currency>> GetTopCurrenciesAsync();
     }
 }

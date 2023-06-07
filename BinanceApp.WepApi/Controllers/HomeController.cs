@@ -1,3 +1,4 @@
+using BinanceApp.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BinanceApp.WepApi.Controllers
@@ -6,16 +7,13 @@ namespace BinanceApp.WepApi.Controllers
     [Route("[controller]")]
     public class HomeController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<HomeController> _logger;
+        private readonly ICurrencyService _currencyService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICurrencyService currencyService)
         {
             _logger = logger;
+            _currencyService = currencyService;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
