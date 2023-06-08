@@ -26,12 +26,28 @@ namespace BinanceApp.WepApi.Controllers
             if (currencies == null)
             {
                 _logger.LogWarning($"Method {nameof(GetTopCurrenciesAsync)} from {nameof(ICurrencyService)} returns null");
-                return NotFound();
+                return BadRequest();
             }
 
             _logger.LogInformation($"Method {nameof(GetTopCurrenciesAsync)} from {nameof(ICurrencyService)} " +
                 $"returns currencies with the best volumes during the day");
             return Ok(currencies);
+        }
+
+        [HttpGet("convert")]
+        public async Task<ActionResult<decimal>> GetConvertCoefficient([FromQuery] ConvertCurrency convertCurrencies)
+        {
+            var coef = await _currencyService.ConvertCurrencies(convertCurrencies);
+            if (coef == null)
+            {
+                _logger.LogWarning($"Method {nameof(_currencyService.ConvertCurrencies)} from {nameof(ICurrencyService)} returns null");
+                _logger.LogWarning($"One of the currency values from method {nameof(_currencyService.ConvertCurrencies)} equals to zero");
+                return BadRequest();
+            }
+
+            _logger.LogInformation($"Method {nameof(GetTopCurrenciesAsync)} from {nameof(ICurrencyService)} " +
+                $"returns the ratio between a currency - {convertCurrencies.CurrencyFrom} and another - {convertCurrencies.CurrencyTo}");
+            return Ok(coef);
         }
     }
 }
